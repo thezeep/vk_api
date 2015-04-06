@@ -8,10 +8,13 @@
 Copyright (C) 2014
 """
 
-import jconfig
 import re
-import requests
 import time
+
+import requests
+
+import jconfig
+
 
 DELAY = 0.36  # 3 requests per second
 CAPTCHA_ERROR_CODE = 14
@@ -28,7 +31,6 @@ RE_PHONE_POSTFIX = re.compile(r'phone_postfix">.*?(\d+).*?<')
 
 
 class VkApi(object):
-
     def __init__(self, login=None, password=None, number=None, sec_number=None,
                  token=None,
                  proxies=None, captcha_handler=None, config_filename=None,
@@ -72,8 +74,8 @@ class VkApi(object):
         self.http = requests.Session()
         self.http.proxies = proxies  # Ставим прокси
         self.http.headers = {  # Притворимся браузером
-            'User-agent': 'Mozilla/5.0 (Windows NT 6.1; rv:31.0)'
-            ' Gecko/20100101 Firefox/31.0'
+                               'User-agent': 'Mozilla/5.0 (Windows NT 6.1; rv:31.0)'
+                                             ' Gecko/20100101 Firefox/31.0'
         }
 
         self.last_request = 0.0
@@ -318,7 +320,6 @@ class VkApi(object):
 
             if error_code in self.error_handlers:
                 if error_code == CAPTCHA_ERROR_CODE:
-
                     error = Captcha(
                         self,
                         error.error['captcha_sid'],
@@ -350,6 +351,7 @@ def doc(method=None):
     url = 'https://vk.com/dev/{}'.format(method)
 
     import webbrowser
+
     webbrowser.open(url)
 
 
@@ -396,7 +398,6 @@ class AccountBlocked(AuthorizationError):
 
 
 class SecurityCheck(AuthorizationError):
-
     def __init__(self, phone_prefix, phone_postfix, response=None):
         self.phone_prefix = phone_prefix
         self.phone_postfix = phone_postfix
@@ -413,7 +414,6 @@ class SecurityCheck(AuthorizationError):
 
 
 class ApiError(Exception):
-
     def __init__(self, vk, method, values, error):
         self.vk = vk
         self.method = method
@@ -434,7 +434,6 @@ class ApiError(Exception):
 
 
 class ApiHttpError(Exception):
-
     def __init__(self, vk, method, values, response):
         self.vk = vk
         self.method = method
@@ -453,7 +452,6 @@ class ApiHttpError(Exception):
 
 
 class Captcha(Exception):
-
     def __init__(self, vk, captcha_sid,
                  func, args=None, kwargs=None, url=None):
         self.vk = vk
